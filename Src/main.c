@@ -3,10 +3,11 @@
   *FILE   		  :  Capstone project
   *PROJECT		  :  Truck space detection system
   *PROGRAMMER     :  Nimal krishna
-  *FIRST VERSION  :  07/10/2017
+  *FIRST VERSION  :  08/10/2017
   *DESCRIPTION    :  This project is  for detecting the free space available in the commercial trucks using the
   *				  :   UV sensor
   *				  :   echo pin->PA0;Trig->PE10
+  
 
 					 
 
