@@ -7,18 +7,9 @@
   *DESCRIPTION    :  This project is  for detecting the free space available in the commercial trucks using the
   *				  :   UV sensor
   *				  :   echo pin->PA0;Trig->PE10
-<<<<<<< HEAD
-  *				  : lcd connections  1->5v,2->gnd,3->contrast,4->PD0,5->PD1,6->PD2,
-  *				  :11->PD4,12->PD5,13->PD6,14->PD7,15->5v,16->GND
-=======
-<<<<<<< HEAD
   *				  : lcd connections  1->5v,2->gnd,3->contrast,4->PD0,5->PD1,6->PD2,
   *				  :11->PD4,12->PD5,13->PD6,14->PD7,15->5v,16->GND
   *				  :
-=======
-  
->>>>>>> fac6b89969b6687029dedcb733225334afaeff3f
->>>>>>> f413e893db7ac3e6faf390e6e814e3c40104e353
 
 					 
 
