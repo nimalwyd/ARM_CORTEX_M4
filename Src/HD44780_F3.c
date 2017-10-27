@@ -1,6 +1,6 @@
 /*#############################################################
- Driver name	    : HD44780_F3.c
- Author 					: Grant Phillips / Revised by Allan Smith for Atollic Truestudio
+ Driver name	 : HD44780_F3.c
+ Author 		 : Grant Phillips / Revised by Allan Smith for Atollic Truestudio
  Date Modified   : 11/10/2016
  Compiler        : Atollic TrueStudio
  Tested On       : STM32F3-Discovery
@@ -49,7 +49,7 @@
 /* ENTRY_MODE Command parameters */
 #define HD44780_ENTRY_SHIFT_DISP 			0x01	 		/*!< Shift display */
 #define HD44780_ENTRY_SHIFT_CURS 			0x00	 		/*!< Shift cursor */
-#define HD44780_ENTRY_ADDR_INC   			0x02     	/*!< Increments pointer */
+#define HD44780_ENTRY_ADDR_INC   			0x02     		/*!< Increments pointer */
 #define HD44780_ENTRY_ADDR_DEC   			0x00	 		/*!< Decrements pointer */
 
 /* DISPLAY Command parameters */
@@ -57,7 +57,7 @@
 #define HD44780_DISP_OFF      				0x00      /*!< Disables the display */
 #define HD44780_DISP_CURS_ON  				0x02      /*!< Enables cursor */
 #define HD44780_DISP_CURS_OFF 				0x00      /*!< Disables cursor */
-#define HD44780_DISP_BLINK_ON					0x01      /*!< Enables cursor blinking */
+#define HD44780_DISP_BLINK_ON				0x01      /*!< Enables cursor blinking */
 #define HD44780_DISP_BLINK_OFF  			0x00      /*!< Disables cursor blinking */
 
 /* SHIFT Command parameters */
@@ -83,13 +83,13 @@
  *
  ***************************************************************/
 
-#define HD44780_CONF_BUS							HD44780_FUNC_BUS_4BIT
-#define HD44780_CONF_LINES						HD44780_FUNC_LINES_2
+#define HD44780_CONF_BUS							HD44780_FUNC_BUS_8BIT
+#define HD44780_CONF_LINES							HD44780_FUNC_LINES_2
 #define HD44780_CONF_FONT							HD44780_FUNC_FONT_5x8
 
 #define HD44780_DISP_LENGTH						16
-#define HD44780_DISP_ROWS							2
-#define HD44780_CONF_SCROLL_MS				20
+#define HD44780_DISP_ROWS						2
+#define HD44780_CONF_SCROLL_MS					20
 
 /* HD44780 Data lines - use the same port for all the lines */
 #define HD44780_DATAPORT							GPIOD
@@ -103,10 +103,10 @@
 #define HD44780_DATABIT7							GPIO_PIN_7
 
 /* HD44780 Control lines - use the same port for all the lines */
-#define HD44780_CONTROLPORT						GPIOD
-#define HD44780_RS_BIT								GPIO_PIN_0
-#define HD44780_RW_BIT								GPIO_PIN_1
-#define HD44780_EN_BIT								GPIO_PIN_2
+#define HD44780_CONTROLPORT							GPIOD
+#define HD44780_RS_BIT								GPIO_PIN_10
+#define HD44780_RW_BIT								GPIO_PIN_8
+#define HD44780_EN_BIT								GPIO_PIN_9
 
 /* defines the peripheral clocks that need to be enabled for the above pins */
 //#define HD44780_RCC_AHBPeriph					RCC_AHBPeriph_GPIOD		//or something like "RCC_AHBPeriph_GPIOA | RCC_AHBPeriph_GPIOD"
@@ -356,7 +356,8 @@ void HD44780_Init(void) {
 
 	/* Configure the HD44780 Data lines (DB7 - DB4) as outputs*/
 	GPIO_InitStructure.Pin = HD44780_DATABIT7 | HD44780_DATABIT6
-			| HD44780_DATABIT5 | HD44780_DATABIT4;
+			| HD44780_DATABIT5 | HD44780_DATABIT4 | HD44780_DATABIT3 | HD44780_DATABIT2
+			| HD44780_DATABIT1 | HD44780_DATABIT0;
 	GPIO_InitStructure.Mode = GPIO_MODE_OUTPUT_PP;
 	GPIO_InitStructure.Pull = GPIO_PULLUP;
 	GPIO_InitStructure.Speed = GPIO_SPEED_HIGH;
@@ -402,6 +403,7 @@ void HD44780_Init(void) {
 
 	/* addr increment, shift cursor */
 	hd44780_entry(HD44780_ENTRY_ADDR_INC, HD44780_ENTRY_SHIFT_CURS);
+
 
 }
 
