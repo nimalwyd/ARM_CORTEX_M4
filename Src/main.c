@@ -9,6 +9,13 @@
   *				  :   echo pin->PA0;Trig->PE10
   *				  : lcd connections  1->5v,2->gnd,3->contrast,4->PD0,5->PD1,6->PD2,
   *				  :11->PD4,12->PD5,13->PD6,14->PD7,15->5v,16->GND
+  *				  stm connections: PE10->DEMUX 1,PE11->DEMUX 2,PE12->DEMUX 3,PE13->MUX 11,PE14->MUX 10,PE15->MUX 9,PA0->MUX 5
+  *				  SENSOR1:TRIG->DEMUX 15,ECHO->MUX 4
+  *				  SENSOR2:TRIG->DEMUX 14,ECHO->MUX 3
+  *				  SENSOR3:TRIG->DEMUX 13,ECHO->MUX 2
+  *				  SENSOR4:TRIG->DEMUX 12,ECHO->MUX 1
+  *				  DEMUX:8,4,5->GND,16->VCC
+  *				  MUX:7,8->GND,16->VCC
 
 					 
 
@@ -28,6 +35,9 @@ void Error_Handler(void);
 static void MX_GPIO_Init(void);
 static void MX_NVIC_Init(void);
 uint32_t volatile timer;
+uint32_t volatile timer1;
+uint32_t volatile timer2;
+uint32_t volatile timer3;
 static void MX_GPIO_Init(void);
 void HD44780_Init(void);
 void HD44780_PutChar(unsigned char c);
@@ -51,11 +61,16 @@ static void MX_NVIC_Init(void)
   /* EXTI0_IRQn interrupt configuration */
   HAL_NVIC_SetPriority(EXTI0_IRQn, 0, 0);
   HAL_NVIC_EnableIRQ(EXTI0_IRQn);
+
+
 }
 
 int main(void)
 {
 	char buffer[10];
+	char buffer1[10];
+	char buffer2[10];
+	char buffer3[10];
 
 
 
@@ -85,33 +100,154 @@ int main(void)
       Error_Handler(); /* Call Error Handler */
     }
 
-//send the trigger signal
+//send the trigger signal to sensor1
 
-HAL_GPIO_WritePin(GPIOE,GPIO_PIN_10,0);
+//PE10,PE11,PE12 are selction pins
+for(int i=0;i<=3;i++)
+{
 
-DWT_Delay_us(1);
+if(i==0)  // trigger the sensor1
+{
+
 HAL_GPIO_WritePin(GPIOE,GPIO_PIN_10,1);
-DWT_Delay_us(10);
+HAL_GPIO_WritePin(GPIOE,GPIO_PIN_11,1);
+HAL_GPIO_WritePin(GPIOE,GPIO_PIN_12,1);
+DWT_Delay_us(1);
 HAL_GPIO_WritePin(GPIOE,GPIO_PIN_10,0);
+HAL_GPIO_WritePin(GPIOE,GPIO_PIN_11,0);
+HAL_GPIO_WritePin(GPIOE,GPIO_PIN_12,0);
+DWT_Delay_us(10);
+HAL_GPIO_WritePin(GPIOE,GPIO_PIN_10,1);
+HAL_GPIO_WritePin(GPIOE,GPIO_PIN_11,1);
+HAL_GPIO_WritePin(GPIOE,GPIO_PIN_12,1);
 
-/*
-	while(!HAL_GPIO_ReadPin(GPIOA,GPIO_PIN_0));
-	DWT->CYCCNT=0;
-	while(HAL_GPIO_ReadPin(GPIOA,GPIO_PIN_0));
-	timer = (DWT->CYCCNT);
-	*/
-	timer =   (34000* timer) ;
-	timer = (timer/36000000);			//calculate the distance
+HAL_GPIO_WritePin(GPIOE,GPIO_PIN_13,0);
+HAL_GPIO_WritePin(GPIOE,GPIO_PIN_14,0);
+HAL_GPIO_WritePin(GPIOE,GPIO_PIN_15,0);
 
 
+HAL_Delay(2000);
+
+timer =   (34000* timer) ;
+timer = (timer/36000000);			//calculate the distance
 sprintf(buffer, "%d", timer);
+
 HD44780_ClrScr();
 HD44780_GotoXY(0, 0);				//set the character cursor to col=0, row=0
 HD44780_PutStr(buffer);				//display text
 HD44780_GotoXY(3, 0);
 HD44780_PutStr("cm");				//display text
+
+}
+
+
+if(i==1)  // trigger the sensor2
+{
+
+HAL_GPIO_WritePin(GPIOE,GPIO_PIN_10,1);
+HAL_GPIO_WritePin(GPIOE,GPIO_PIN_11,1);
+HAL_GPIO_WritePin(GPIOE,GPIO_PIN_12,1);
+DWT_Delay_us(1);
+HAL_GPIO_WritePin(GPIOE,GPIO_PIN_10,1);
+HAL_GPIO_WritePin(GPIOE,GPIO_PIN_11,0);
+HAL_GPIO_WritePin(GPIOE,GPIO_PIN_12,0);
+DWT_Delay_us(10);
+HAL_GPIO_WritePin(GPIOE,GPIO_PIN_10,1);
+HAL_GPIO_WritePin(GPIOE,GPIO_PIN_11,1);
+HAL_GPIO_WritePin(GPIOE,GPIO_PIN_12,1);
+
+HAL_GPIO_WritePin(GPIOE,GPIO_PIN_13,1);
+HAL_GPIO_WritePin(GPIOE,GPIO_PIN_14,0);
+HAL_GPIO_WritePin(GPIOE,GPIO_PIN_15,0);
+
+
+HAL_Delay(2000);
+
+timer =   (34000* timer) ;
+timer = (timer/36000000);
+sprintf(buffer1, "%d", timer);
+
+HD44780_GotoXY(7, 0);				//set the character cursor to col=0, row=0
+HD44780_PutStr(buffer1);				//display text
+HD44780_GotoXY(10, 0);
+HD44780_PutStr("cm");				//display text
 HAL_Delay(500);
-								  	//clear the display
+
+
+}
+
+if(i==2)  // trigger the sensor3
+{
+
+HAL_GPIO_WritePin(GPIOE,GPIO_PIN_10,1);
+HAL_GPIO_WritePin(GPIOE,GPIO_PIN_11,1);
+HAL_GPIO_WritePin(GPIOE,GPIO_PIN_12,1);
+DWT_Delay_us(1);
+HAL_GPIO_WritePin(GPIOE,GPIO_PIN_10,0);
+HAL_GPIO_WritePin(GPIOE,GPIO_PIN_11,1);
+HAL_GPIO_WritePin(GPIOE,GPIO_PIN_12,0);
+DWT_Delay_us(10);
+HAL_GPIO_WritePin(GPIOE,GPIO_PIN_10,1);
+HAL_GPIO_WritePin(GPIOE,GPIO_PIN_11,1);
+HAL_GPIO_WritePin(GPIOE,GPIO_PIN_12,1);
+
+HAL_GPIO_WritePin(GPIOE,GPIO_PIN_13,0);
+HAL_GPIO_WritePin(GPIOE,GPIO_PIN_14,1);
+HAL_GPIO_WritePin(GPIOE,GPIO_PIN_15,0);
+
+
+HAL_Delay(2000);
+
+
+timer =   (34000* timer) ;
+timer = (timer/36000000);			//calculate the distance
+sprintf(buffer2, "%d", timer);
+
+HD44780_GotoXY(0, 1);				//set the character cursor to col=0, row=0
+HD44780_PutStr(buffer2);				//display text
+HD44780_GotoXY(3, 1);
+HD44780_PutStr("cm");				//display text
+
+}
+
+
+if(i==3)  // trigger the sensor4
+{
+
+HAL_GPIO_WritePin(GPIOE,GPIO_PIN_10,1);
+HAL_GPIO_WritePin(GPIOE,GPIO_PIN_11,1);
+HAL_GPIO_WritePin(GPIOE,GPIO_PIN_12,1);
+DWT_Delay_us(1);
+HAL_GPIO_WritePin(GPIOE,GPIO_PIN_10,1);
+HAL_GPIO_WritePin(GPIOE,GPIO_PIN_11,1);
+HAL_GPIO_WritePin(GPIOE,GPIO_PIN_12,0);
+DWT_Delay_us(10);
+HAL_GPIO_WritePin(GPIOE,GPIO_PIN_10,1);
+HAL_GPIO_WritePin(GPIOE,GPIO_PIN_11,1);
+HAL_GPIO_WritePin(GPIOE,GPIO_PIN_12,1);
+
+HAL_GPIO_WritePin(GPIOE,GPIO_PIN_13,1);
+HAL_GPIO_WritePin(GPIOE,GPIO_PIN_14,1);
+HAL_GPIO_WritePin(GPIOE,GPIO_PIN_15,0);
+
+
+HAL_Delay(2000);
+
+
+
+timer =   (34000* timer) ;
+timer = (timer/36000000);
+sprintf(buffer3, "%d", timer);
+
+HD44780_GotoXY(7, 1);				//set the character cursor to col=0, row=0
+HD44780_PutStr(buffer3);				//display text
+HD44780_GotoXY(10, 1);
+HD44780_PutStr("cm");				//display text
+HAL_Delay(1000);
+
+}
+
+}
 
  }
 
@@ -187,25 +323,32 @@ static void MX_GPIO_Init(void)
 
   /*Configure GPIO pin : PA0 */
 
-  GPIO_InitStruct.Pin = GPIO_PIN_0;
+  GPIO_InitStruct.Pin = GPIO_PIN_0|GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_3|GPIO_PIN_4|GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_7|GPIO_PIN_8|GPIO_PIN_9|GPIO_PIN_11|GPIO_PIN_12|GPIO_PIN_13|GPIO_PIN_14|GPIO_PIN_15;
   GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING_FALLING;
   GPIO_InitStruct.Pull = GPIO_PULLDOWN;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
+
+  GPIO_InitStruct.Pin = GPIO_PIN_10;
+    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+    GPIO_InitStruct.Pull = GPIO_PULLDOWN;
+    HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+  HAL_GPIO_WritePin(GPIOA,GPIO_PIN_10,1);
 
 
 
 
 
   /*Configure GPIO pins : PE10 PE11 */
-  GPIO_InitStruct.Pin = GPIO_PIN_10|GPIO_PIN_11|GPIO_PIN_12;
+  GPIO_InitStruct.Pin = GPIO_PIN_10|GPIO_PIN_11|GPIO_PIN_12|GPIO_PIN_13|GPIO_PIN_14|GPIO_PIN_15;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOE, GPIO_PIN_10|GPIO_PIN_11, GPIO_PIN_RESET);
+ // HAL_GPIO_WritePin(GPIOE, GPIO_PIN_10|GPIO_PIN_11|GPIO_PIN_12|GPIO_PIN_13|GPIO_PIN_14|GPIO_PIN_15, GPIO_PIN_RESET);
 
 }
 

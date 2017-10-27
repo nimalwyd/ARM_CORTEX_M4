@@ -50,6 +50,8 @@ void PendSV_Handler(void);
 void SysTick_Handler(void);
 void PVD_IRQHandler(void);
 void EXTI0_IRQHandler(void);
+void EXTI2_IRQHandler(void);
+
 
 #ifdef __cplusplus
 }

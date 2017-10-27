@@ -45,6 +45,7 @@
 extern uint32_t timer;		*/
 extern volatile uint32_t timer;
 
+
 /* External variables --------------------------------------------------------*/
 
 /******************************************************************************/
@@ -119,34 +120,28 @@ void PVD_IRQHandler(void)
 void EXTI0_IRQHandler(void)
 {
   /* USER CODE BEGIN EXTI0_IRQn 0 */
-
-	HAL_GPIO_WritePin(GPIOE,GPIO_PIN_10,1);
-
-
+	//HAL_GPIO_WritePin(GPIOE,GPIO_PIN_10,1);
   HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_0);
-
 
   DWT->CYCCNT=0;
   /* USER CODE BEGIN EXTI0_IRQn 1 */
 	while(HAL_GPIO_ReadPin(GPIOA,GPIO_PIN_0)){
-		HAL_GPIO_WritePin(GPIOE,GPIO_PIN_10,0);
+	//	HAL_GPIO_WritePin(GPIOE,GPIO_PIN_10,1);
 			timer = (DWT->CYCCNT);  // increase the count as long as the echo signal remains high
+			if(timer>7600000)  //No echo coming back break from the while loop
+				break;
 	}
-
-
-  /* USER CODE BEGIN EXTI0_IRQn 1 */
-//	if(HAL_GPIO_ReadPin(GPIOA,GPIO_PIN_0)){
-//		DWT->CYCCNT=0;
-//	}
-//	else{
-//		timer = (DWT->CYCCNT);
-//	}
-
-
-
-  /* USER CODE END EXTI0_IRQn 1 */
+	//HAL_GPIO_WritePin(GPIOE,GPIO_PIN_10,0);
+    /* USER CODE END EXTI0_IRQn 1 */
 }
 
+
+/*
+void EXTI15_10_IRQHandler(void)
+{
+
+}
+*/
 /* USER CODE BEGIN 1 */
 
 /* USER CODE END 1 */
