@@ -1,0 +1,13 @@
+<<<<<<< HEAD
+stm32f3xx_it.c:58:6:SVC_Handler	0	static
+stm32f3xx_it.c:71:6:PendSV_Handler	0	static
+stm32f3xx_it.c:84:6:SysTick_Handler	8	static
+stm32f3xx_it.c:106:6:PVD_IRQHandler	0	static
+stm32f3xx_it.c:120:6:EXTI0_IRQHandler	16	static
+=======
+stm32f3xx_it.c:58:6:SVC_Handler	0	static
+stm32f3xx_it.c:71:6:PendSV_Handler	0	static
+stm32f3xx_it.c:84:6:SysTick_Handler	8	static
+stm32f3xx_it.c:106:6:PVD_IRQHandler	0	static
+stm32f3xx_it.c:120:6:EXTI0_IRQHandler	16	static
+>>>>>>> 8ea8ad8bae1a2c1a2e7290f860f3499a828e727a

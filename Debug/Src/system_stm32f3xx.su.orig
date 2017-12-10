@@ -1,0 +1,7 @@
+<<<<<<< HEAD
+system_stm32f3xx.c:170:6:SystemInit	0	static
+system_stm32f3xx.c:245:6:SystemCoreClockUpdate	8	static
+=======
+system_stm32f3xx.c:170:6:SystemInit	0	static
+system_stm32f3xx.c:245:6:SystemCoreClockUpdate	8	static
+>>>>>>> 8ea8ad8bae1a2c1a2e7290f860f3499a828e727a
