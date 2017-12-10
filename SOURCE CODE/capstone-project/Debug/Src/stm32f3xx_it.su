@@ -1,5 +1,0 @@
-stm32f3xx_it.c:58:6:SVC_Handler	0	static
-stm32f3xx_it.c:71:6:PendSV_Handler	0	static
-stm32f3xx_it.c:84:6:SysTick_Handler	8	static
-stm32f3xx_it.c:106:6:PVD_IRQHandler	0	static
-stm32f3xx_it.c:120:6:EXTI0_IRQHandler	16	static
